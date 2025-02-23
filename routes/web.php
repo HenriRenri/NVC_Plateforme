@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
@@ -7,18 +8,12 @@ use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
-Route::get('admin.users', [AdminController::class, 'getTotalUser'], function () {
-    return view('admin/index');
-})->middleware(['auth', 'verified'])->name('admin.users');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    Route::get('/admin/users', [AdminController::class, 'getTotalUser'])->name('admin.users.index');
+Route::middleware(['auth', AuthAdmin::class])->group( function ()
+{ 
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('users_boards');
 });
 
 require __DIR__.'/auth.php';
