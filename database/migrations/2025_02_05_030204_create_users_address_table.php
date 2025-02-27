@@ -17,10 +17,9 @@ return new class extends Migration
             $table->string('address_line_1');
             $table->string('address_line_2')->nullable();
             $table->string('city');
-            $table->string('state')->nullable();
+            $table->string('state');
             $table->string('postal_code')->nullable();
             $table->string('country');
-            $table->boolean('is_primary')->default(false);
             $table->timestamps();
         });
     }
