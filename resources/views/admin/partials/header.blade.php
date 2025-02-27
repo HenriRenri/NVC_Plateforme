@@ -17,7 +17,7 @@
       </button>
       <!-- Hamburger Toggle BTN -->
       <a class="block flex-shrink-0 lg:hidden" href="index.html">
-        <img src="./images/logo/logo-icon.svg" alt="Logo" />
+        <img src="{{ asset('./images/logo/apple-touch-icon.png') }}" alt="Logo" />
       </a>
     </div>
     <div class="hidden sm:block">

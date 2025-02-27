@@ -3,10 +3,7 @@
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Models\User;
 
 Route::get('/', function () {
     return view('home');
@@ -22,7 +19,9 @@ Route::middleware(['auth', AuthAdmin::class])->group( function ()
 { 
     Route::get('/admin', [UserController::class, 'index'])->name('admin');
     Route::get('/admin_users', [UserController::class, 'users'])->name('users_boards');
-    Route::get('/admin_users/{id}', [UserController::class, 'showUsers'])->name('users_boards_show');
+    Route::get('/admin_users/{id}', [UserController::class, 'show'])->name('users_boards_show');
+    Route::get('/admin_users_add', [UserController::class, 'create'])->name('users_boards_add');
+    Route::post('/admin_users_add', [UserController::class, 'store'])->name('users_boards_store');
 });
 
 require __DIR__.'/auth.php';

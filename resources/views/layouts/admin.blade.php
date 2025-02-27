@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
 
-    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
 
@@ -35,6 +35,7 @@
         @yield('content')
 
 
-  <script src="{{asset('assets/fontawesome/js/all.min.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+      <script src="{{asset('assets/fontawesome/js/all.min.js')}}"></script>
   </body>
 </html>

@@ -29,7 +29,7 @@
       
             <!-- Submit Button -->
             <div class="mt-6 flex justify-between">
-              <a class="underline text-indigo-600 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300" href="{{ route('login') }}">Avais déjà une compte</a>
+              <a class="underline text-indigo-600 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300" href="{{ route('register') }}">Crée un compte</a>
               <button type="submit" class="px-6 py-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 focus:ring focus:ring-teal-300 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300">Register</button>
             </div>
           </form>
