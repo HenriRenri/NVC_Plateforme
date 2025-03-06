@@ -18,6 +18,7 @@
                             <div>
                                 <p><strong>Email :</strong> {{ $user->email }}</p>
                                 <p><strong>Téléphone :</strong> {{ $user->phone }}</p>
+                                <p><strong>Role :</strong> {{ $user->role }}</p>
                             </div>
                         </div>
                     </div>

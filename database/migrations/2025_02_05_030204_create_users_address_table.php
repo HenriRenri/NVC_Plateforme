@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('users_address', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('address_line_1');
+            $table->string('address_line_1')->nullable();
             $table->string('address_line_2')->nullable();
-            $table->string('city');
-            $table->string('state');
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
-            $table->string('country');
+            $table->string('country')->nullable();
             $table->timestamps();
         });
     }
