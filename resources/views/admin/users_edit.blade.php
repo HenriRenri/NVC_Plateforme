@@ -7,6 +7,7 @@
                 <h2 class="text-center text-3xl font-extrabold text-gray-900 dark:text-white">Update users informations</h2>
                 <form action="{{ route('users_update', $user->id) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="flex flex-row gap-4 justify-between mt-5 px-5">
                         <div class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg w-1/2">
                             <h2 class="text-center text-lg font-medium text-gray-900 dark:text-white">Personnal information</h2>
@@ -30,9 +31,9 @@
                                 <div>
                                     <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Role</label>
                                     <select name="role" id="role" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        @foreach ($user as $users)
-                                            <option value="">{{ $users->role }}</option>
-                                        @endforeach
+                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Administrator</option>
+                                        <option value="owner" {{ $user->role == 'owner' ? 'selected' : '' }}>Owners</option>
+                                        <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>Users</option>
                                     </select>
                                 </div>
                             </div>
@@ -40,35 +41,40 @@
                         <div class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg w-1/2">
                             <h3 class="text-center text-lg font-medium text-gray-900 dark:text-white">Address Information</h3>
                             <div class="mt-4 space-y-4 mb-8">
-                            <div>
-                                <label for="address_line_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address N°1</label>
-                                <input id="address_line" name="address_line_1" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="address_line_2" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address N°2</label>
-                                <input id="address_line" name="address_line_2" type="text"class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
-                                <input id="city" name="city" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="state" class="block text-sm font-medium text-gray-700 dark:text-gray-300">State</label>
-                                <input id="state" name="state" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Postale Code</label>
-                                <input id="postal_code" name="postal_code" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
-                            <div>
-                                <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Country</label>
-                                <input id="country" name="country" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            </div>
+                                @if ($user->address->first())
+                                    @php
+                                        $address = $user->address->first();
+                                    @endphp
+                                    <div>
+                                        <label for="address_line_1" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address N°1</label>
+                                        <input id="address_line" name="address_line_1" type="text" value="{{ $address->address_line_1 }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label for="address_line_2" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address N°2</label>
+                                        <input id="address_line" name="address_line_2" type="text" value="{{ $address->address_line_2 }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300">City</label>
+                                        <input id="city" name="city" type="text" value="{{ $address->city }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label for="state" class="block text-sm font-medium text-gray-700 dark:text-gray-300">State</label>
+                                        <input id="state" name="state" type="text" value="{{ $address->state }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label for="postal_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Postale Code</label>
+                                        <input id="postal_code" name="postal_code" type="text" value="{{ $address->postal_code }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Country</label>
+                                        <input id="country" name="country" type="text" value="{{ $address->country }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end px-6">
-                        <button type="submit" class=" mb-5 px-6 py-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 focus:ring focus:ring-teal-300 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300">Register</button>
+                        <button type="submit" class=" mb-5 px-6 py-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 focus:ring focus:ring-teal-300 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300">Update</button>
                     </div>
                 </form>
             </div>

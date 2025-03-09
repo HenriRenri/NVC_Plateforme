@@ -43,8 +43,8 @@
                     <p><strong>Créer du :</strong> {{ $user->created_at->format('d/m/Y') }}</p>
 
                     <!-- Bouton Retour -->
-                    <div class="pt-4">
-                        <a href="{{ route('users_boards') }}" class="inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600">
+                    <div class="pt-4 flex justify-end">
+                        <a href="{{ route('users_boards') }}" class="inline-block px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600">
                             Back to the users listes
                         </a>
                     </div>
