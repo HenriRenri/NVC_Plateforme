@@ -67,11 +67,9 @@
                             <a href="{{ route('users_edit', $user->id) }}">
                               <i class="fas fa-user-pen text-green-400 text-xl"></i>
                             </a>
-                            <form action="{{ route('delete', $user->id) }}" method="POST" id="delete-user-{{ $user->id }}">
-                              @csrf
-                              @method('DELETE')
-                                <i class="fa fa-trash text-red-400 text-xl" onclick="confirmDelete({{$user->id}})"></i>
-                            </form>
+                            <button id="confirmation-modal" onclick="confirmDelete({{ $user->id }})">
+                              <i class="fa fa-trash text-red-400" ></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -193,7 +191,27 @@
 <!-- End Update modal!! -->
 
 <!-- Delete modal -->
-  
+  <div id="confirmation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg w-96">
+        <div class="p-6 text-center">
+            <h2 class="text-xl font-semibold text-gray-800">Êtes-vous sûr ?</h2>
+            <p class="mt-2 text-gray-600">Cette action supprimera définitivement l'utilisateur.</p>
+            <div class="mt-6 flex justify-center gap-4">
+                <!-- Bouton Annuler -->
+                <button id="cancel-button" 
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                    Annuler
+                </button>
+                <!-- Bouton Confirmer -->
+                <form action="{{ route('delete', $user->id) }}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button id="confirm-button"  " class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Oui, supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
 <!-- End delete modal -->
 @endsection
 
@@ -202,10 +220,37 @@
     document.getElementById('defaultModalButton').click();
   });
 
-  function confirmDelete(userId)
-  {
-    if (confirm("Are you sur to delete this Users compte? This actionne will not irreversible")) {
-      document.getElementById('delete-user'+ userId).submit();
-    }
+  // Variables pour le popup et le formulaire
+  let modal = document.getElementById("confirmation-modal");
+  let confirmButton = document.getElementById("confirm-button");
+  let cancelButton = document.getElementById("cancel-button");
+  let currentForm = null;
+  // Fonction pour afficher le modal
+  function confirmDelete(userId) {
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      // Associer le formulaire correspondant
+      currentForm = document.getElementById('delete-user-' + userId);
   }
+  // Fonction pour cacher le modal
+  function closeModal() {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+  }
+  // Lorsqu'on clique sur "Confirmer"
+  confirmButton.addEventListener("click", function () {
+      if (currentForm) {
+          currentForm.submit();
+      }
+  });
+  // Lorsqu'on clique sur "Annuler"
+  cancelButton.addEventListener("click", function () {
+      closeModal();
+  });
+  // Fermer le modal en cliquant en dehors
+  window.addEventListener("click", function (e) {
+      if (e.target === modal) {
+          closeModal();
+      }
+  });
 </script>
