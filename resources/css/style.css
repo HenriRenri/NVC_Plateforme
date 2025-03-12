@@ -215,3 +215,10 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+.icon-slash {
+  width: 20px;
+  height: 20px;
+  stroke: #8a8484;
+  stroke-width: 2;
+}

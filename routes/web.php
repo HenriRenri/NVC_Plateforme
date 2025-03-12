@@ -24,7 +24,7 @@ Route::middleware(['auth', AuthAdmin::class])->group( function ()
     Route::post('/admin_users_add', [UserController::class, 'store'])->name('users_store');
     Route::get('/admin_users_edit/{id}', [UserController::class, 'edit'])->name('users_edit');
     Route::put('/admin_users_edit/{id}', [UserController::class, 'update'])->name('users_update');
-    Route::delete('/admin_users_delete/{user}', [UserController::class, 'deleted'])->name('delete');
+    Route::delete('/admin_users_delete/{id}', [UserController::class, 'delete'])->name('delete');
 });
 
 require __DIR__.'/auth.php';

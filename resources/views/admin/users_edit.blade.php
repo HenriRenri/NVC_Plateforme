@@ -4,7 +4,7 @@
     <div class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center py-8 px-4 md:px-8 lg:px-4">
         <div class="w-full max-w-6xl space-y-4">
             <div class="relative bg-white rounded-lg shadow-md dark:bg-gray-700 space-rx-5 mt-4">
-                <h2 class="text-center text-3xl font-extrabold text-gray-900 dark:text-white">Update users informations</h2>
+                <h2 class="text-center text-3xl font-extrabold text-gray-900 dark:text-white">Update user's informations</h2>
                 <form action="{{ route('users_update', $user->id) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -73,8 +73,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-6 flex justify-end px-6">
-                        <button type="submit" class=" mb-5 px-6 py-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 focus:ring focus:ring-teal-300 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300">Update</button>
+                    <div class="mt-6 flex justify-between px-6">
+                        <a href="{{ route('users_boards') }}">
+                            <button type="button" class="mb-5 px-6 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300">Cancel</button>
+                        </a>
+                        <button type="submit" class="mb-5 px-6 py-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 focus:ring focus:ring-teal-300 transform motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 transition ease-in-out duration-300">Update</button>
                     </div>
                 </form>
             </div>

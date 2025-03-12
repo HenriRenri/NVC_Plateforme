@@ -45,6 +45,17 @@ class UserController extends Controller
             'state' => ['nullable', 'string', 'max:255'],
             'postal_code' => ['nullable', 'string', 'max:20'],
             'country' => ['nullable', 'string', 'max:255'],
+        ], [
+            'name.required' => 'Le champ Nom est obligatoire.',
+            'phone.required' => 'Le numéro de téléphone est obligatoire.',
+            'phone.unique' => 'Ce numéro de téléphone est déjà enregistré.',
+            'email.required' => 'L’adresse e-mail est obligatoire.',
+            'email.email' => 'Veuillez saisir une adresse e-mail valide.',
+            'email.unique' => 'Cette adresse e-mail est déjà utilisée.',
+            'password.required' => 'Le mot de passe est obligatoire.',
+            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+            'role.required' => 'Le rôle de l’utilisateur est obligatoire.',
+            'role.in' => 'Le rôle choisi n’est pas valide.',
         ]);
 
         $user = User::create([
@@ -65,7 +76,7 @@ class UserController extends Controller
             'country' => $request->country,
         ]);
 
-        return redirect()->route('users_boards')->with('success', 'User created successfully');
+        return redirect()->route('users_boards')->with('creat_success', $user->name."'s count has been created successfully");
     }
 
     public function edit($id)
@@ -110,12 +121,13 @@ class UserController extends Controller
             'country' => $request->input('country', $address->country),
         ]);
 
-        return redirect()->route('users_boards')->with('success', 'User updated successfully');
+        return redirect()->route('users_boards')->with('update_success', $user->name."'s information was updated successfully");
     }
 
-    public function deleted(User $user)
+    public function delete($id)
     {
+        $user = User::find($id);
         $user->delete();
-        return redirect()->route('users_boards')->with('success', 'User deleted successfully');
+        return redirect()->route('users_boards')->with('delete_success', 'The user count has been deleted succesfully');
     }
 }
