@@ -16,18 +16,13 @@ class UserController extends Controller
     public function users()
     {
         $users = User::with('address')->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.users', compact('users'));
+        return view('admin.user.users', compact('users'));
     }
 
     public function show($id)
     {
         $user = User::with('address')->findOrFail($id);
-        return view('admin.users_show', compact('user'));
-    }
-
-    public function create()
-    {
-        return view('admin.users');
+        return view('admin.user.users_show', compact('user'));
     }
 
     public function store(Request $request)
@@ -82,7 +77,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::with('address')->findOrFail($id);
-        return view('admin.users_edit', compact('user'));
+        return view('admin.user.users_edit', compact('user'));
     }
 
     public function update(Request $request, $id)
