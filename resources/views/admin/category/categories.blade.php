@@ -1,10 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
-        
     <div class="container mx-auto mt-10">
-        <!-- Modal toggle -->
-        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="text-white items-center bg-yellow-600 hover:bg-green-700 text-sm text-center font-medium py-2.5 px-5 rounded-lg" type="button">Add new Categories</button>
+
+        <button data-modal-target="create-category-modal" data-modal-toggle="create-category-modal" class="text-white items-center bg-yellow-600 hover:bg-green-700 text-sm text-center font-medium py-4 px-6 rounded-lg" type="button">New categoris</button>
 
         <h1 class="text-2xl font-bold mt-5 text-center">Liste categoris</h1>
         <div class="flex items-center flex-wrap justify-end">
@@ -25,32 +24,12 @@
             </ul>
         </div>
 
-        @if (session('creat_success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 text-center px-4 py-3 rounded relative mb-5" role="alert">
-            <span class="block sm:inline">{{ session('creat_success') }}</span>
-        </div>
-        @endif
-        @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 text-center px-4 py-3 rounded relative mb-5 " role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if (session('categories_success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
+                <span class="block sm:inline">{{ session('categories_success') }}</span>
             </div>
         @endif
 
-        @if(session('update_success'))
-        <div class="p-4 mb-4 text-sm text-green-800 text-center rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
-            {{ session('update_success') }}
-        </div>
-        @endif
-
-        @if(session('delete_success'))
-        <div class="p-4 mb-4 text-sm text-red-800 text-center rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
-            {{ session('delete_success') }}
-        </div>
-        @endif
         <table class="table-auto w-full border-collapse border border-gray-300 mt-5">
             <thead>
                 <tr>
@@ -58,7 +37,7 @@
                     <th class="border border-gray-300 px-4 py-2">Nom</th>
                     <th class="border border-gray-300 px-4 py-2">Image</th>
                     <th class="border border-gray-300 px-4 py-2">Description</th>
-                    <th class="border border-gray-300 px-4 py-2">Date de creatio</th>
+                    <th class="border border-gray-300 px-4 py-2">Date de creation</th>
                     <th class="border border-gray-300 px-4 py-2">Action</th>
                 </tr>
             </thead>
@@ -73,15 +52,15 @@
                         <td class="border border-gray-300 px-4 py-2 ">
                             <div class="flex justify-between items-center">
                             <div class="text-gray-400">
-                                <i class="fa fa-eye cursor-pointer" onclick="window.location='{{ route('users_show', $categori->id) }}'"></i>
+                                <i class="fa fa-eye cursor-pointer" onclick="window.location=''"></i>
                             </div>
                             <div class="text-green-400">
-                                <a href="{{ route('users_edit', $categori->id) }}">
+                                <a href="#">
                                 <i class="fa fa-user-pen  text-xl"></i>
                                 </a>
                             </div>
                             <div class="text-red-400">
-                                <button id="deleteButton-{{$categori->name}}" data-modal-target="deleteModal-{{$categori->name}}" data-modal-toggle="deleteModal-{{$categori->name}}"  type="button">
+                                <button id="deleteButton" data-modal-target="deleteModal" data-modal-toggle="deleteModal"  type="button">
                                 <i class="fa fa-trash"></i>
                                 </button>
                             </div>
@@ -123,7 +102,7 @@
         @if ($categories->hasPages())
             <div class="mt-5 flex justify-between">
             {{-- Previous Page Link --}}
-            @if ($categorier->onFirstPage())
+            @if ($categories->onFirstPage())
                 <span class="px-4 py-2 bg-gray-200 text-gray-500 cursor-not-allowed rounded">Previous</span>
             @else
                 <a href="{{ $categories->previousPageUrl() }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">< Previous</a>
@@ -131,7 +110,7 @@
 
             {{-- Next Page Link --}}
             @if ($categories->hasMorePages())
-                <a href="{{ $categoresi->nextPageUrl() }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Next ></a>
+                <a href="{{ $categories->nextPageUrl() }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Next ></a>
             @else
                 <span class="px-4 py-2 bg-gray-200 text-gray-500 cursor-not-allowed rounded">Next</span>
             @endif
@@ -139,63 +118,116 @@
         @endif
     </div>
 
-    <!-- Creat modal -->
-    <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full mt-10">
-    <div class="relative p-4 w-full max-w-4xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add new categories</h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Cancel</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <form class="p-4 md:p-5" action="{{ route('categories_store') }}" method="POST">
-                @csrf
-                <div class="flex flex justify-center">
-                    <!-- User Information Card -->
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">New categories</h3>
-                        <div class="mt-4 space-y-4">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoriees name<span class="text-red-700">*</span></label>
-                            <input id="name" name="name" type="text" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        </div>
-                        <div class="flex items-center justify-center w-full">
-                            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                    </svg>
-                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+    <!-- Modal de création de catégorie -->
+    <div id="create-category-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full mt-10">
+        <div class="relative p-4 w-full max-w-4xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Ajouter une nouvelle catégorie</h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="create-category-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Fermer</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form class="p-4 md:p-5" action="{{ route('categories_store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="flex flex justify-center">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Informations de la catégorie</h3>
+                            <div class="mt-4 space-y-4">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie<span class="text-red-700">*</span></label>
+                                    <input id="name" name="name" type="text" value="{{old('name')}}" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 </div>
-                                <input id="dropzone-file" type="file" class="hidden" />
-                            </label>
-                        </div>
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                            <input id="phone" name="phone" type="text" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @error('name')
+                                    <span class="alert alert-danger text-center">{{$message}}</span>
+                                @enderror
+                                <div>
+                                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                    <textarea id="description" name="description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" rows="3"></textarea>
+                                </div>
+                                @error('description')
+                                    <span class="alert alert-danger text-center">{{$message}}</span>
+                                @enderror
+                                <div class="flex items-center justify-center w-full">
+                                    <label for="image" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <div class="item" id="imagepreview" style="display: none">
+                                            <img src="" alt="">
+                                        </div>
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                            </svg>
+                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Cliquez pour télécharger</span> ou glissez-déposez</p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (MAX. 800x400px)</p>
+                                        </div>
+                                        <input id="myImage" name="image" type="file" accept="image/*" />
+                                    </label>
+                                </div>
+                                @error('image')
+                                    <span class="alert alert-danger text-center">{{$message}}</span>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex justify-end">
-                    <button type="submit" class="text-white items-center bg-yellow-400 hover:bg-green-700 text-sm text-center font-medium py-2 px-5 rounded-lg mt-5">Add new users</button>
-                </div>
-            </form>
+                    <div class="flex justify-end">
+                        <button type="submit" class="text-white items-center bg-yellow-400 hover:bg-green-700 text-sm text-center font-medium py-2 px-5 rounded-lg mt-5">Ajouter la catégorie</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    </div> 
-    <!-- End creat modal!! -->
 
 @endsection
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-      document.getElementById('defaultModalButton').click();
+        // Gestion des modals
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pour tous les boutons avec data-modal-toggle
+        const modalToggles = document.querySelectorAll('[data-modal-toggle]');
+        modalToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const modalId = toggle.getAttribute('data-modal-toggle');
+                const modal = document.getElementById(modalId);
+                
+                if (modal) {
+                    // Si le modal est caché, on l'affiche, sinon on le cache
+                    if (modal.classList.contains('hidden')) {
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                    } else {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                    }
+                }
+            });
+        });
+        
+        // Fermeture des modals en cliquant à l'extérieur
+        const modals = document.querySelectorAll('[id$="-modal"]');
+        modals.forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }
+            });
+        });
+    });
+
+    // Prévisualisation de l'image uploadée (optionnel)
+    $(function(){
+        $("#myImage").on("change", function(e){
+            const photoInput = $("#myImage");
+            const [file] = this.files;
+            if (condition) {
+                $("#imagepreview img").attr('src',URL.createObjectURL(file));
+                $("#magepreview").show();
+            }
+        });
     });
 </script>
