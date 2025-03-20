@@ -96,13 +96,19 @@ class CategoriesController extends Controller
         $category->description = $request->description;
 
         if ($request->hasFile('image')) {
+            
+            if ($category->image_path && file_exists(public_path('uploads/categories/' . $category->image_path))) {
+                unlink(public_path('uploads/categories/' . $category->image_path));
+            }
+            
+            // Ensuite, traitez la nouvelle image
             $image = $request->file('image');
             $file_extension = $image->extension();
             $fileName = Carbon::now()->timestamp.'.'.$file_extension;
             $this->categories_thumbnails_image($image, $fileName);
             $category->image_path = $fileName;
         }
-
+    
         $category->save();
         
         return redirect()->route('category')->with('update_success', 'The categoris has been updated succesfully.');

@@ -23,6 +23,11 @@
                 </li>
             </ul>
         </div>
+        @if (session('categories_success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 text-center px-4 py-3 rounded relative mt-4" role="alert">
+                <span class="block sm:inline">{{ session('categories_success') }}</span>
+            </div>
+        @endif
 
         @if (session('categories_success'))
             <div class="bg-green-100 border border-green-400 text-green-700 text-center px-4 py-3 rounded relative mt-4" role="alert">
@@ -58,7 +63,7 @@
                         <td class="border border-gray-300 px-4 py-2 ">
                             <div class="flex justify-between items-center">
                             <div class="text-gray-400">
-                                <i class="fa fa-eye cursor-pointer"></i>
+                                <i class="fa fa-eye cursor-pointer" onclick="window.location='{{ route('categories_show', $categori->id) }}'"></i>
                             </div>
                             <div class="text-green-400">
                                 <a href="{{ route('categories_edit', $categori->id) }}">
