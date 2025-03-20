@@ -30,13 +30,13 @@ class Product extends Model
         return $this->hasOne(ProductImage::class)->where('is_main', true);
     }
 
-    public function box()
+    /*public function box()
     {
-        return $this->belongsTo(Box::class);
-    }
+        return $this->belongsTo(Boxes::class);
+    } */
 
      public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Categories::class);
     }
 }

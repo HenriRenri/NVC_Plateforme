@@ -27,55 +27,85 @@ class CategoriesController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
-            'image' => '    mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => ['nullable', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
     
         $category = new Categories();
         $category->name = $request->name;
         $category->description = $request->description;
-        $image = $request->fille('image');
-        $file_extenstion = $request->fille('image')->extension();
-        $fileName = Carbon::now()->timestamp.'.'.$file_extenstion;
-        $this->categories_thumbails_image($image, $fileName);
-        $category->image = $fileName;
-        
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $file_extension = $image->extension();
+            $fileName = Carbon::now()->timestamp.'.'.$file_extension;
+            $this->categories_thumbnails_image($image, $fileName);
+            $category->image_path = $fileName;
+        }
+
         $category->save();
         
         return redirect()->route('category')->with('categories_success', 'The categoris has been created succesfully.');
     }
 
-    public function categories_thumbails_image($image, $imageName)
+    public function categories_thumbnails_image($image, $imageName)
     {
-        $destionationPath = public_path('uploads/categories');
-        $img = Image::read($image->path);
-        $img->cover(124,124,"top");
-        $image->resize(124,124,function($constraint){
-            $constraint->aspectRation();
-        })->save($destionationPath.'/'.$imageName);
+        $destinationPath = public_path('uploads/categories');
+        
+        // Créer le répertoire s'il n'existe pas
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+        
+        // Utiliser correctement Intervention Image
+        $img = Image::read($image);
+        $img->cover(124, 124);
+        $img->save($destinationPath.'/'.$imageName);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Categories $categories)
+    public function show($id)
     {
-        //
+        $categories = Categories::find($id);
+        return view('admin.category.categories_show', compact('categories'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Categories $categories)
+    public function edit($id)
     {
-        //
+        $categories = Categories::find($id);
+        return view('admin.category.categories_edit', compact('categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categories $categories)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+        ]);
+    
+        $category = Categories::find($id);
+        $category->name = $request->name;
+        $category->description = $request->description;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $file_extension = $image->extension();
+            $fileName = Carbon::now()->timestamp.'.'.$file_extension;
+            $this->categories_thumbnails_image($image, $fileName);
+            $category->image_path = $fileName;
+        }
+
+        $category->save();
+        
+        return redirect()->route('category')->with('update_success', 'The categoris has been updated succesfully.');
     }
 
     /**

@@ -25,7 +25,7 @@
         </div>
 
         @if (session('categories_success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
+            <div class="bg-green-100 border border-green-400 text-green-700 text-center px-4 py-3 rounded relative mt-4" role="alert">
                 <span class="block sm:inline">{{ session('categories_success') }}</span>
             </div>
         @endif
@@ -45,17 +45,23 @@
                 @foreach ($categories as $categori)
                     <tr>
                         <td class="border border-gray-300 px-4 py-2 ">{{ $categori->id }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ substr($categori->name, 0, 2)}}...</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ substr($categori->description, 0, 1)}}... {{ substr($categori->description, -2) }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $categori->image_path }}</td>                           
-                       <td class="border border-gray-300 px-4 py-2">{{ $categori->created_at->format('d/m/Y') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $categori->name}}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ substr($categori->description, 0, 10)}} ...</td>
+                        <td class="border border-gray-300 px-4 py-2 flex items-center justify-center">
+                            @if ($categori->image_path)
+                                <img src="{{ asset('uploads/categories/' .$categori->image_path) }}" alt="{{ $categori->name }}" class="w-15 h-15 object-cover rounded-md">
+                            @else
+                                <span class="text-gray-400">Pas d'image</span>
+                            @endif
+                        </td>                        
+                        <td class="border border-gray-300 px-4 py-2">{{ $categori->created_at->format('d/m/Y') }}</td>
                         <td class="border border-gray-300 px-4 py-2 ">
                             <div class="flex justify-between items-center">
                             <div class="text-gray-400">
-                                <i class="fa fa-eye cursor-pointer" onclick="window.location=''"></i>
+                                <i class="fa fa-eye cursor-pointer"></i>
                             </div>
                             <div class="text-green-400">
-                                <a href="#">
+                                <a href="{{ route('categories_edit', $categori->id) }}">
                                 <i class="fa fa-user-pen  text-xl"></i>
                                 </a>
                             </div>
@@ -69,7 +75,7 @@
                     </tr>
 
                     <!-- Delete modal -->
-                    <div id="deleteModal-{{$categoriser->name}}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    {{-- <div id="deleteModal-{{$categoriser->name}}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative p-4 w-full max-w-md h-full md:h-auto">
                         <!-- Modal content -->
                         <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -93,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>--}}
                 <!-- Delete modal -->
                 @endforeach
             </tbody>
@@ -156,9 +162,6 @@
                                 @enderror
                                 <div class="flex items-center justify-center w-full">
                                     <label for="image" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                        <div class="item" id="imagepreview" style="display: none">
-                                            <img src="" alt="">
-                                        </div>
                                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                             <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
@@ -185,7 +188,7 @@
 
 @endsection
 <script>
-        // Gestion des modals
+    // Gestion des modals
     document.addEventListener('DOMContentLoaded', function() {
         // Pour tous les boutons avec data-modal-toggle
         const modalToggles = document.querySelectorAll('[data-modal-toggle]');
@@ -222,11 +225,10 @@
     // Prévisualisation de l'image uploadée (optionnel)
     $(function(){
         $("#myImage").on("change", function(e){
-            const photoInput = $("#myImage");
             const [file] = this.files;
             if (condition) {
-                $("#imagepreview img").attr('src',URL.createObjectURL(file));
-                $("#magepreview").show();
+                $("#imagepreview img").attr('src', URL.createObjectURL(file));
+                $("#imagepreview").show();
             }
         });
     });
