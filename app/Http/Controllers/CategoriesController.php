@@ -67,8 +67,8 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $categories = Categories::find($id);
-        return view('admin.category.categories_show', compact('categories'));
+        $category = Categories::find($id);
+        return view('admin.category.categories_show', compact('category'));
     }
 
     /**
@@ -117,8 +117,21 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categories $categories)
+    public function delete($id)
     {
-        //
+        $category = Categories::find($id);
+
+        if (!$category) {
+            return redirect()->route('categories.index')->withErrors('Catégorie non trouvée.');
+        }
+    
+        // Supprime l'image associée
+        if ($category->image_path && file_exists(public_path('uploads/categories/' . $category->image_path))) {
+            unlink(public_path('uploads/categories/' . $category->image_path));
+        }
+    
+        $category->delete();
+    
+        return redirect()->route('category')->with('delete_success', 'Catégorie has been deleted succesfully.');
     }
 }

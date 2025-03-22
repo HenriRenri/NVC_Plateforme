@@ -41,6 +41,10 @@
                 <li>
                   <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white" href="{{ route('category') }}" :class="page === 'ecommerce' && '!text-white'" ><i class="fa fa-layer-group"></i>Categories</a>
                 </li>
+
+                <li>
+                  <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white" href="{{ route('products') }}" :class="page === 'ecommerce' && '!text-white'" ><i class="fa fa-layer-group"></i>Products</a>
+                </li>
               </ul>
             </div>
             
