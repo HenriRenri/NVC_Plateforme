@@ -3,6 +3,9 @@
 @section('content')
     <div class="container mx-auto mt-10">
 
+        <a href="{{ route('products_create') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+            Add new product
+        </a>
         
         <h1 class="text-2xl font-bold mt-5 text-center">Products listes</h1>
         <div class="flex items-center flex-wrap justify-end">
@@ -26,7 +29,7 @@
             <thead>
                 <tr>
                     <th class="border border-gray-300 px-4 py-2">#</th>
-                    <th class="border border-gray-300 px-4 py-2">Box id</th>
+                    <th class="border border-gray-300 px-4 py-2">Box numbers</th>
                     <th class="border border-gray-300 px-4 py-2">Categories</th>
                     <th class="border border-gray-300 px-4 py-2">Name</th>
                     <th class="border border-gray-300 px-4 py-2">Description</th>
@@ -41,6 +44,7 @@
             <tbody class="text-center">
                 @foreach ($products as $product)
                     <td class="border border-gray-300 px-4 py-2">{{ $product->id }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $product->boxes_id }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ $product->category_id }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ $product->name }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ $product->description }}</td>

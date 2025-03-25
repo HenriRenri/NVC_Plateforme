@@ -15,7 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Products::with(['categories', 'images' => function ($query) {
+        $products = Products::with(['boxes','categories', 'images' => function ($query) {
             $query->where('is_default', true);
         }])->orderBy('id', 'desc')->paginate(10);
 
@@ -28,8 +28,6 @@ class ProductsController extends Controller
     public function create()
     {
         $categories = Categories::all();
-        //$boxes = Box::all();
-        
         return view('admin.products.create', compact('categories'));
     }
 
@@ -43,7 +41,7 @@ class ProductsController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'box_id' => 'required|exists:boxes,id',
+            'boxes_id' => 'required|exists:boxes,id',
             'category_id' => 'nullable|exists:categories,id',
             'is_active' => 'boolean',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
@@ -54,7 +52,7 @@ class ProductsController extends Controller
             'description' => $validated['description'] ?? null,
             'price' => $validated['price'],
             'stock' => $validated['stock'],
-            'box_id' => $validated['box_id'],
+            'boxes_id' => $validated['boxes_id'],
             'category_id' => $validated['category_id'] ?? null,
             'is_active' => $request->has('is_active'),
         ]);
@@ -93,7 +91,7 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+       //
     }
 
     /**
