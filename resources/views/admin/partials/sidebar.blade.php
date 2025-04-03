@@ -43,8 +43,13 @@
                 </li>
 
                 <li>
-                  <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white" href="{{ route('products') }}" :class="page === 'ecommerce' && '!text-white'" ><i class="fa fa-layer-group"></i>Products</a>
+                  <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white" href="{{ route('boxes') }}" :class="page === 'ecommerce' && '!text-white'" ><i class="fa fa-shop"></i>Boxes</a>
                 </li>
+
+                <li>
+                  <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white" href="{{ route('products') }}" :class="page === 'ecommerce' && '!text-white'" ><i class="fa fa-boxes-stacked"></i>Products</a>
+                </li>
+
               </ul>
             </div>
             

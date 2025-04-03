@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Boxes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -26,10 +27,10 @@ class Products extends Model
         return $this->belongsTo(Categories::class);
     }
 
-    /*public function boxes()
+    public function boxes()
     {
         return $this->belongsTo(Boxes::class);
-    }*/
+    }
 
     public function images()
     {

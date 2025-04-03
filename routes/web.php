@@ -4,6 +4,7 @@ use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BoxesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CategoriesController;
 
@@ -31,6 +32,9 @@ Route::middleware(['auth', AuthAdmin::class])->group( function ()
     Route::get('/admin_categories_edit/{id}', [CategoriesController::class, 'edit'])->name('categories_edit');
     Route::put('/admin_categories_edit/{id}', [CategoriesController::class, 'update'])->name('categories_update');
     Route::delete('/admin_categories_delete/{id}', [CategoriesController::class, 'delete'])->name('categories_delete');
+
+    //Boxes routes
+    Route::get('/admin_boxes', [BoxesController::class, 'index'])->name('boxes');
 
     // Products routes
     Route::get('/admin_products', [ProductsController::class, 'index'])->name('products');

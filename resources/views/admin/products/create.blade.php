@@ -19,6 +19,34 @@
         </div>
         @endif
 
+        <div class="flex items-center flex-wrap justify-end">
+            <ul class="flex items-center flex-wrap justify-start gap10">
+                <li>
+                    <a href="{{ route('admin') }}">
+                        <div class="text-tiny">Dashboard</div>
+                    </a>
+                </li>
+                <li>
+                    <svg class="icon-slash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 20L20 4" />
+                     </svg>
+                </li>
+                <li>
+                    <a href="{{ route('products') }}">
+                        <div class="text-tiny">Products</div>
+                    </a>
+                </li>
+                <li>
+                  <svg class="icon-slash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 20L20 4" />
+                   </svg>
+                </li>
+                <li>
+                    <div class="text-tiny">Add products</div>
+                </li>
+            </ul>
+        </div>
+
         <div class="bg-white rounded-lg shadow-md p-6">
             <form action="{{ route('products_store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
